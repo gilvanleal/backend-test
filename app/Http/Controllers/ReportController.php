@@ -40,7 +40,7 @@ class ReportController extends Controller
         foreach ($items as $key => $value) {
             $items_avg[$value->name] = $value->total/$survivor;
         }
-        return response()->json([$survivor, $items, $items_avg], 200);
+        return response()->json(["Média de itens: ", $items_avg], 200);
     }
 
     public function lost_point()
@@ -51,6 +51,6 @@ class ReportController extends Controller
         ->join('items', 'items.id', '=', 'recourses.item_id')
         ->where('survivors.infected', '<', 3)
         ->get();
-        return response()->json([$items], 200);
+        return response()->json(['Pontos perdido', $items], 200);
     }
 }
