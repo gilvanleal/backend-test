@@ -93,6 +93,14 @@ docker run -it -v ${pwd}:/home/master/data -p 80:8000 zssn:1 /home/master/data/a
 > | ---------- | ----------- |
 > |**GET**|_/api/survivors/{suvivor_id}/update-location/_|
 
+> **Body**
+```json
+{
+	"latitude": 99.999,
+	"longitude": 99.999
+}
+```
+
 ### Report infected survivor
 
 > | method | url |
