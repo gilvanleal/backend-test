@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ExampleTest extends TestCase
+class SuvivorTest extends TestCase
 {
     /**
      * A basic test example.
@@ -22,16 +22,16 @@ class ExampleTest extends TestCase
     {
         $response = $this->json(
             'POST', '/api/survivors',
-            ["name"=> "Gilvan Leal",
-            "birth"=> "1990-10-19",
+            ["name" => "Gilvan Leal",
+            "birth" => "1990-10-19",
             "gender" => "male",
-            "latitude"=> "10.123456",
-            "longitude"-> "20.654321",
-            "recourses"=> [[
-                "item_id"=> "1",
-                "amount"=> "3"
-            ]]
+            "latitude" => "10.123456",
+            "longitude"=> "20.654321",
+            "recourses"=> [
+                ["item_id"=> "1","amount"=> "3"]
+            ]
+            ]
         );
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
 }
