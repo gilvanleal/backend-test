@@ -7,26 +7,30 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-### Docker (Windows)
+# ZSSN (Zombie Survival Social Network)
 
-#### Commnd build:
+## Instalation **Docker** (Windows)
+
+### Commnd build:
 
 ```console
 docker build --file .\worker.dockerfile --tag zssn:1 .
 ```
-
-#### Commnd Run:
+### Commnd Run:
 
 ```console
 docker run -it -v ${pwd}:/home/master/data -p 80:8000 zssn:1 /home/master/data/artisan serve --host=0.0.0.0
 ```
 
-### Create Survivor
-**Method**: **`PUT`**
+### Survivor </br>
 
-**URL**: `/api/survivors/`
+> ### Create Survivor
 
-**Body**:
+>  | method | url |
+>  | ---------- | ----------- |
+>  |**GET**|_/api/survivors/_|
+>   **Body**:
+
 ```json
 {
   "name": "Gilvan Leal",
@@ -41,14 +45,14 @@ docker run -it -v ${pwd}:/home/master/data -p 80:8000 zssn:1 /home/master/data/a
   ]
 }
 ```
-### List Survivos
-**Method**: **`GET`**
 
-**URL**: `/api/survivors/`
+> ### List Survivors
 
-**Code**: `200`
+> | method | url |
+> | ---------- | ----------- |
+> |**GET**|_/api/survivors/_|
+>  **Response**:
 
-**Response**:
 ```json
 {
     "data": [
@@ -79,6 +83,55 @@ docker run -it -v ${pwd}:/home/master/data -p 80:8000 zssn:1 /home/master/data/a
             }
         }
  ]}
+ ```
+
+### Report infected survivor
+
+> | method | url |
+> | ---------- | ----------- |
+> |**GET**|_/api/survivors/{suvivor_id_report}/report_contamination/{suvivor_id_reported}_|
+>  **Response**:
+
+### Trade survivor
+
+> | method | url |
+> | ---------- | ----------- |
+> |**PUT**|_/api/trades/{survivor1_id}/swap/{survivor2_id}_|
+
+>   **Body**:
+
+```json
+{
+	"recourses": {
+  		"{survivor1_id}"  :  [{"item_id": "4", "amount": "4" }],
+  		"{survivor2_id}" : [{"item_id": "1", "amount": "1"}]
+	}
+}
 ```
+>  **Response**:
 
+### Report </br>
 
+### Infecteds survivor
+
+> | method | url |
+> | ---------- | ----------- |
+> |**GET**|_/api/report/infecteds/_|
+
+### Non-infecteds survivor
+
+> | method | url |
+> | ---------- | ----------- |
+> |**GET**|_/api/report/non-infecteds/_|
+
+### Avg recourses  per survivor
+
+> | method | url |
+> | ---------- | ----------- |
+> |**GET**|_/api/report/avg-recourses/_|
+
+### Lost point per survivor infected
+
+> | method | url |
+> | ---------- | ----------- |
+> |**GET**|_/api/report/lost-point/_|
