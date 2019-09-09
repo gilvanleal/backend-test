@@ -33,8 +33,13 @@ class SurvivorController extends Controller
 
     public function update(Request $request, Survivor $survivor)
     {
-        $survivor->update($request->all());
-        return response()->json($survivor, 200);
+        if(!$survivor->is_infected){
+            $survivor->update($request->all());
+            return response()->json($survivor, 200);
+        }else{
+            return response()->json("Não atualizado", 406);
+        }
+        
     }
 
     public function delete(Request $request, Survivor $survivor)
