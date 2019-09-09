@@ -16,6 +16,6 @@
 |name |text|Survivor name | "Gilvan Leal"
 |gender|enum|male or female| "male"
 |birth|date|Birth date| 1990-10-19
-|latitude|decuimal|Location|10.435454
+|latitude|decimal|Location|10.435454
 |longitude|decimal|Location|11.564555
 |recourses|array|Inventory |resources[[item_id: 1, [amout: 4]], [item_id: 2, [amout: 3]]]
