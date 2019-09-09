@@ -7,15 +7,24 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-#### Create Survivor
-```sh
-/api/survivors/?name=Gilvan Leal&gender=male&birth=1990-10-19-01-01&latitude=10.435454&longitude=11.564555&recourses[0][item_id]=1&recourses[0][amount]=4&recourses[1][item_id]=2&recourses[1][amount]=3
+### Create Survivor
+**Method:** `PUT`
+
+**URL** `/api/survivors/`
+
+**Body**
+```json
+{
+  "name": "Gilvan Leal",
+  "birth": "1990-10-19",
+  "gender": "male",
+  "latitude": "10.123456",
+  "longitude": "20.654321",
+  "recourses": [{
+  	"item_id": "1",
+  	"amount": "3"
+  	}
+  ]
+}
 ```
-| Paramns | Type |description | Exmplo |
-| ------ | ------ | -----------|-------|
-|name |text|Survivor name | "Gilvan Leal"
-|gender|enum|male or female| "male"
-|birth|date|Birth date| 1990-10-19
-|latitude|decimal|Location|10.435454
-|longitude|decimal|Location|11.564555
-|recourses|array|Inventory |resources[[item_id: 1, [amout: 4]], [item_id: 2, [amout: 3]]]
+#### List Survivos
