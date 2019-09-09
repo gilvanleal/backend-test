@@ -87,11 +87,17 @@ docker run -it -v ${pwd}:/home/master/data -p 80:8000 zssn:1 /home/master/data/a
  ]}
  ```
 
+### Update Suvivor location
+
+> | method | url |
+> | ---------- | ----------- |
+> |**GET**|_/api/survivors/{suvivor_id}/update-location/_|
+
 ### Report infected survivor
 
 > | method | url |
 > | ---------- | ----------- |
-> |**GET**|_/api/survivors/{suvivor_id_report}/report_contamination/{suvivor_id_reported}_|
+> |**GET**|_/api/survivors/{suvivor_id_report}/report-contamination/{suvivor_id_reported}_|
 
 >  **Response**:
 
