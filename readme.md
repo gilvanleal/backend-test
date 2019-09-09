@@ -29,6 +29,7 @@ docker run -it -v ${pwd}:/home/master/data -p 80:8000 zssn:1 /home/master/data/a
 >  | method | url |
 >  | ---------- | ----------- |
 >  |**GET**|_/api/survivors/_|
+
 >   **Body**:
 
 ```json
@@ -51,6 +52,7 @@ docker run -it -v ${pwd}:/home/master/data -p 80:8000 zssn:1 /home/master/data/a
 > | method | url |
 > | ---------- | ----------- |
 > |**GET**|_/api/survivors/_|
+
 >  **Response**:
 
 ```json
@@ -90,6 +92,7 @@ docker run -it -v ${pwd}:/home/master/data -p 80:8000 zssn:1 /home/master/data/a
 > | method | url |
 > | ---------- | ----------- |
 > |**GET**|_/api/survivors/{suvivor_id_report}/report_contamination/{suvivor_id_reported}_|
+
 >  **Response**:
 
 ### Trade survivor
