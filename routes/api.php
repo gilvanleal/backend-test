@@ -23,7 +23,8 @@ Route::prefix('survivors')->group(function () {
     Route::post('', 'SurvivorController@store');
     Route::put('{survivor}', 'SurvivorController@update');
     Route::delete('{survivor}', 'SurvivorController@delete');
-    Route::get('{report}/report_contamination/{reported}', 'SurvivorController@report_contamination');
+    Route::get('{survivor}/update-location', 'SurvivorController@update_location');
+    Route::get('{report}/report-contamination/{reported}', 'SurvivorController@report_contamination');
 });
 
 Route::prefix('recourses')->group(function () {

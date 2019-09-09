@@ -59,4 +59,11 @@ class SurvivorController extends Controller
         }
        
     }
+
+    public function update_location(Request $request, Survivor $survivor){
+        $survivor->latitude = $request->input('latitude');
+        $survivor->longitude = $request->input('longitude');
+        $survivor->save();
+        return response()->json($survivor, 200);
+    }
 }
