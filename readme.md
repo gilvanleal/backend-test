@@ -8,11 +8,11 @@
 </p>
 
 ### Create Survivor
-**Method:** `PUT`
+**Method**: **`PUT`**
 
-**URL** `/api/survivors/`
+**URL**: `/api/survivors/`
 
-**Body**
+**Body**:
 ```json
 {
   "name": "Gilvan Leal",
@@ -27,4 +27,11 @@
   ]
 }
 ```
-#### List Survivos
+### List Survivos
+**Method**: **`GET`**
+
+**URL**: `/api/survivors/`
+
+**Response** List of Survivors
+
+**Code**: `200`
