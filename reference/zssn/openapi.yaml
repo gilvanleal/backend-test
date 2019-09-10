@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: zssn
+  version: '1.0'
+servers:
+  - url: 'http://localhost'
+paths:
+  /api/survivors/:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./models/survivor.v1.yaml
+              examples:
+                example-1: {}
+    parameters: []
+    post:
+      summary: ''
+      responses:
+        '200':
+          description: OK
+      description: Create Survivor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            examples:
+              Create survivor:
+                name: Gilvan Leal
+                birth: '1990-10-19'
+                gender: male
+                latitude: '10.123456'
+                longitude: '20.654321'
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+        description: ''
+components:
+  schemas: {}

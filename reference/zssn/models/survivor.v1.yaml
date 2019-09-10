@@ -1,0 +1,11 @@
+title: Survivor
+type: object
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  birth:
+    type: string
+    format: date
+    example: '2019-10-10'

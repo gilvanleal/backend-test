@@ -1,0 +1,5 @@
+title: Recourse
+type: object
+properties:
+  id:
+    type: string

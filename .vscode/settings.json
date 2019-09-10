@@ -1,0 +1,10 @@
+{
+    "sqltools.connections": [
+        {
+            "database": ".\\database\\database.sqlite",
+            "dialect": "SQLite",
+            "name": "zssn"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
