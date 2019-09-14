@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Validator;
 use Illuminate\Database\Eloquent\Model;
 use App\Recourse;
 
@@ -14,9 +15,27 @@ class Survivor extends Model
     protected $guarded = ['recourses'];
     protected $attributes = ['infected' => 0, 'birth' => '2019-01-01'];
 
+    public static $createRules = [
+        'name' => ['required','max:100'],
+        'birth' => ['required','date'],
+        'latitude' => ['required','numeric'],
+        'longitude' => ['required','numeric'],
+        'gender' => ['required'],
+        'recourses' => ['present', 'array'],
+        'recourses.*.amount' => ['required', 'integer', 'gte:0'],
+        'recourses.*.item_id' => ['required', 'integer']
+    ];
+
     public function recourses()
     {
         return $this->hasMany(Recourse::class);
+    }
+
+    public function setRecoursesAttribute($recourses)
+    {
+        foreach ($recourses as $recourse) {
+            $this->recourses()->save(new Recourse($recourse));
+        }
     }
 
     public function getLocationAttribute()
@@ -48,6 +67,5 @@ class Survivor extends Model
     {
         $this->attributes['recourses'] = $value;
     }
-
 
 }

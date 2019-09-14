@@ -19,6 +19,6 @@ class ItemCollection extends ResourceCollection
             'links' => [
                 'self' => 'link-value',
             ],
-        ]
+        ];
     }
 }
