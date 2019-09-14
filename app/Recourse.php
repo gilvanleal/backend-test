@@ -12,6 +12,11 @@ class Recourse extends Model
     protected $appends = ['item_name', 'item_point', 'points'];
     protected $attributes = ['amount' => 0];
 
+    public static $createRules = [
+        'amount' => ['required', 'nullable', 'gte:0'],
+        'item_id' => ['required', 'nullable']
+    ];
+
      /**
      * Get the survivor that owns the resource.
      */

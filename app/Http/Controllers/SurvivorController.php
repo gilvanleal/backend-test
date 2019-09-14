@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Survivor;
+use App\Recourse;
 use App\Http\Resources\SurvivorCollection;
 use App\Http\Resources\Survivor as SurvivorResource;
 
@@ -24,11 +26,20 @@ class SurvivorController extends Controller
 
     public function store(Request $request)
     {
-        $survivor = Survivor::create($request->all());
-        $recourses = $request->get('recourses');
-        $survivor->recourses()->createMany($recourses);
-        $survivor->save();
-        return response()->json(new SurvivorResource($survivor), 201);
+        $validatedData = $request->validate(Survivor::$createRules);
+        $result = DB::transaction(
+            function() use($validatedData){
+                try{
+                    $validateData = $this->validate(request(), Survivor::$createRules);
+                    $survivor = Survivor::create($validateData);
+                    $survivor->recourses()->createMany($validateData['recourses']);
+                    $survivor->save();
+                    return response()->json(new SurvivorResource($survivor), 201);
+                }catch(\Excpetion $e){
+                    return response()->json($e->getMessage(), 402);
+                }
+        });
+        return $result;
     }
 
     public function update(Request $request, Survivor $survivor)
