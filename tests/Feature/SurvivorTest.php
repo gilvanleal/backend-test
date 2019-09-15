@@ -4,10 +4,13 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Item;
+use App\Survivor;
 
 class SuvivorTest extends TestCase
 {
+    use DatabaseTransactions;
     /**
      * A basic test example.
      *
@@ -38,7 +41,6 @@ class SuvivorTest extends TestCase
         // Ony recorces void
         $data["recourses"] = [];
         $response = $this->json('POST', '/api/survivors', $data);
-        $response->dump();
         $response->assertStatus(201);
     }
 
@@ -100,8 +102,48 @@ class SuvivorTest extends TestCase
               ]
           ];
         $response = $this->json('POST', '/api/survivors', $s);
-        $response->dump();
         $response->assertStatus(422)
         ->assertJsonValidationErrors(['recourses.0.item_id', 'recourses.1.amount']);
+    }
+
+    public function testReportInfected(){
+
+        $reported_name = 'Dywlly Porto';
+        $report1 = Survivor::where('name', 'Gilvan Leal')->value('id');
+        $report2 = Survivor::where('name', 'João Paulo')->value('id');
+        $report3 = Survivor::where('name', 'Paulo Silva')->value('id');
+
+        //Vote report1
+        $reported = Survivor::where('name', $reported_name)->value('id');
+        $actionReport = action('SurvivorController@report_contamination', ['report'=>$report1, 'reported' => $reported]);
+        
+        $response = $this->json('GET', $actionReport);
+        $response->assertStatus(200)->assertJson(['name'=> $reported_name, 'votes' => 1]);
+
+        $response = $this->json('GET', route('survivor.show', ['survivor'=> $reported]));
+        $response->assertStatus(200)->assertJsonFragment(['is_infected' => False]);
+        
+        $response = $this->json('GET', $actionReport);
+        $response->assertStatus(402);
+
+        //Vote report2
+        $actionReport = action('SurvivorController@report_contamination', ['report'=>$report2, 'reported' => $reported]);
+        $response = $this->json('GET', $actionReport);
+        $response->assertStatus(200)->assertJson(['name'=> $reported_name, 'votes' => 2]);
+
+        $response = $this->json('GET', route('survivor.show', ['survivor'=> $reported]));
+        $response->assertStatus(200)->assertJsonFragment(['is_infected' => False]);
+
+        //Vote report3
+        $actionReport = action('SurvivorController@report_contamination', ['report'=>$report3, 'reported' => $reported]);
+        $response = $this->json('GET', $actionReport);
+        $response->assertStatus(200)->assertJson(['name'=> $reported_name, 'votes' => 3]);
+
+        $response = $this->json('GET', route('survivor.show', ['survivor'=> $reported]));
+        $response->assertStatus(200)->assertJsonFragment(['is_infected' => True]);
+
+        // Some survivor vote
+        $response = $this->json('GET', $actionReport);
+        $response->assertStatus(402);
     }
 }
