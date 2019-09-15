@@ -1,0 +1,48 @@
+version: '3'
+services:
+  db:
+    image: postgres:10
+    container_name: dbzssn
+    restart: always
+    env_file: .env
+    volumes:
+     - db_data:/var/lib/postgresql/data
+      # COMPOSE_CONVERT_WINDOWS_PATHS: 1
+    ports:
+      - '5432:5432'  
+  worker:
+    env_file: .env
+    image: zssn:1
+    container_name: worker
+    build:
+      context: ./
+      dockerfile: worker.dockerfile
+      # args: 
+      #   requirements: ./requirements.txt
+    depends_on: 
+      - db
+    # environment: 
+    #   COMPOSE_CONVERT_WINDOWS_PATHS: 1
+    volumes:
+      - ./:/data
+    working_dir: /data
+    # ports:
+    #    - '9000:9000'
+    # links:
+    #   - "db:database"
+  nginx:
+    image: nginx:1.16
+    container_name: webserver
+    volumes:
+      - ./:/data
+      - "./nginx:/etc/nginx/conf.d"
+    working_dir: /data
+    # command: [nginx-debug, '-g', 'daemon off;']
+    depends_on:
+      - worker
+    # environment: 
+    #   COMPOSE_CONVERT_WINDOWS_PATHS: 1
+    ports:
+      - "80:80"
+volumes:
+    db_data:
