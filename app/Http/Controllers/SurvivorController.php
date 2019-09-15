@@ -62,16 +62,21 @@ class SurvivorController extends Controller
     public function report_contamination(Request $request, Survivor $report, Survivor $reported){
         if($report != $reported)
         {
-            $reported->infected += 1;
-            $reported->save();
-            if($reported->is_infected){
-                return response()->json($reported->name.' está infectado(a).', 200);
+            try
+            {
+                $reported->reporteds()->attach($report);
+                $reported->save();
+                return response()->json(['name' => $reported->name, 'votes' => $reported->reporteds->count()], 200);
             }
-            return response()->json($reported->name.' votes: '.$reported->infected, 200);
+            catch(\Illuminate\Database\QueryException $e)
+            {
+                return response()->json(['Repoted votes is unique per survivors. Vote not computed!.'], 402);
+            }
+            
         }
         else
         {
-            return response()->json('Report and Reported equals', 406);
+            return response()->json('Report and Reported are equals', 406);
         }
        
     }
