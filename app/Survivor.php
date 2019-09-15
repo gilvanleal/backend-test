@@ -12,7 +12,7 @@ class Survivor extends Model
     // protected $guarded = ['infected'];
     protected $appends = ['age', 'is_infected', 'location'];
     protected $fillable = ['name', 'birth', 'gender', 'latitude', 'longitude'];
-    protected $guarded = ['recourses'];
+    protected $guarded = ['recourses', 'reporteds'];
     protected $attributes = ['infected' => 0, 'birth' => '2019-01-01'];
 
     public static $createRules = [
@@ -31,6 +31,10 @@ class Survivor extends Model
         return $this->hasMany(Recourse::class);
     }
 
+    public function reporteds(){
+        return $this->belongsToMany(Survivor::class, 'survivor_infected', 'report_id', 'reported_id');
+    }
+
     public function setRecoursesAttribute($recourses)
     {
         foreach ($recourses as $recourse) {
@@ -45,7 +49,7 @@ class Survivor extends Model
 
     public function getIsInfectedAttribute()
     {
-        return $this->attributes['infected'] >= 3;
+        return $this->reporteds->count() >= 3;
     }
 
     public function getAgeAttribute()
