@@ -15,12 +15,11 @@ class CreateRecoursesTable extends Migration
     {
         Schema::create('recourses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamps();
             $table->unsignedInteger('amount')->default(0);
             $table->unsignedBigInteger('item_id')->comment('Items');
-            $table->foreign('item_id')->references('id')->on('items')->onDelete('RESTRICT');
+            $table->foreign('item_id')->references('id')->on('items')->onDelete('CASCADE');
             $table->unsignedBigInteger('survivor_id')->comment('Survivors');
-            $table->foreign('survivor_id')->references('id')->on('survivors')->onDelete('RESTRICT');
+            $table->foreign('survivor_id')->references('id')->on('survivors')->onDelete('CASCADE');
             $table->unique(['item_id', 'survivor_id']);
         });
     }
