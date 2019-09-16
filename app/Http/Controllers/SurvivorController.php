@@ -59,26 +59,29 @@ class SurvivorController extends Controller
         return response()->json(null, 204);
     }
 
-    public function report_contamination(Request $request, Survivor $report, Survivor $reported){
-        if($report != $reported)
-        {
-            try
-            {
-                $reported->reporteds()->attach($report);
-                $reported->save();
-                return response()->json(['name' => $reported->name, 'votes' => $reported->reporteds->count()], 200);
-            }
-            catch(\Illuminate\Database\QueryException $e)
-            {
-                return response()->json(['Repoted votes is unique per survivors. Vote not computed!.'], 402);
-            }
-            
-        }
-        else
-        {
+    public function report_contamination(Request $request, $report, $reported){
+        if($report == $reported){
             return response()->json('Report and Reported are equals', 406);
         }
-       
+
+        $result = DB::transaction(
+            function() use($report, $reported){
+                try{
+                    //$report_s = Survivor::find($report);
+                    $reported_s = Survivor::find($reported);
+                    $reported_s->reporteds()->attach($report);
+                    // $reported_s->save();
+                    return response()->json(['name' => $reported_s->name, 'votes' => $reported_s->reporteds->count()], 200);
+                }
+                catch(\Illuminate\Database\QueryException $e)
+                {
+                    return response()->json(['Repoted votes is unique per survivors. Vote not computed!.'], 402);
+                }
+                catch(\Excpetion $e){
+                    return response()->json([$e->getMessage()], 501);
+                }
+        }); 
+        return $result;    
     }
 
     public function update_location(Request $request, Survivor $survivor){
