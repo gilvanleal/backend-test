@@ -5,12 +5,13 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
 use App\Item;
 use App\Survivor;
 
 class SuvivorTest extends TestCase
 {
-    use DatabaseTransactions;
+    //use DatabaseTransactions;
     /**
      * A basic test example.
      *
@@ -18,12 +19,14 @@ class SuvivorTest extends TestCase
      */
     public function testList()
     {
+        $this->seed();
         $response = $this->get('/api/survivors');
         $response->assertStatus(200);
     }
 
     public function testCreateHappy()
     {
+        $this->seed();
         //$this->withoutExceptionHandling();
         $data = ["name" => "Gilvan Leal",
         "birth" => "1990-10-19",
@@ -46,6 +49,7 @@ class SuvivorTest extends TestCase
 
     public function testCreateValidate()
     {
+        $this->seed();
         // request blank data array
         $response = $this->json('POST', '/api/survivors', []);
         $response->assertStatus(422)
@@ -107,43 +111,45 @@ class SuvivorTest extends TestCase
     }
 
     public function testReportInfected(){
-
+        $this->seed();
         $reported_name = 'Dywlly Porto';
-        $report1 = Survivor::where('name', 'Gilvan Leal')->value('id');
-        $report2 = Survivor::where('name', 'João Paulo')->value('id');
-        $report3 = Survivor::where('name', 'Paulo Silva')->value('id');
+        $reported = Survivor::where('name', $reported_name)->value('id');
 
         //Vote report1
-        $reported = Survivor::where('name', $reported_name)->value('id');
-        $actionReport = action('SurvivorController@report_contamination', ['report'=>$report1, 'reported' => $reported]);
-        
-        $response = $this->json('GET', $actionReport);
+        $report1 = Survivor::where('name', 'Gilvan Leal')->value('id');
+        $routeReport = route('suvivor.report', ['report' => $report1, 'reported' => $reported]);
+        $response = $this->json('PUT', $routeReport, []);
         $response->assertStatus(200)->assertJson(['name'=> $reported_name, 'votes' => 1]);
 
-        $response = $this->json('GET', route('survivor.show', ['survivor'=> $reported]));
+        $response = $this->json('GET', route('survivor.show', ['survivor'=> 2]));
         $response->assertStatus(200)->assertJsonFragment(['is_infected' => False]);
         
-        $response = $this->json('GET', $actionReport);
+        $response = $this->json('PUT', $routeReport);
         $response->assertStatus(402);
-
+       
         //Vote report2
-        $actionReport = action('SurvivorController@report_contamination', ['report'=>$report2, 'reported' => $reported]);
-        $response = $this->json('GET', $actionReport);
+        $report2 = Survivor::where('name', 'João Paulo')->value('id');
+        $routeReport = route('suvivor.report', ['report' => $report2, 'reported' => $reported], false);
+        $response = $this->json('PUT', $routeReport, []);
         $response->assertStatus(200)->assertJson(['name'=> $reported_name, 'votes' => 2]);
 
         $response = $this->json('GET', route('survivor.show', ['survivor'=> $reported]));
         $response->assertStatus(200)->assertJsonFragment(['is_infected' => False]);
 
+        $response = $this->json('PUT', $routeReport);
+        $response->assertStatus(402);
+
         //Vote report3
-        $actionReport = action('SurvivorController@report_contamination', ['report'=>$report3, 'reported' => $reported]);
-        $response = $this->json('GET', $actionReport);
+        $report3 = Survivor::where('name', 'Paulo Silva')->value('id');
+        $routeReport = route('suvivor.report', ['report'=>$report3, 'reported' => $reported], false);
+        $response = $this->json('PUT', $routeReport);
         $response->assertStatus(200)->assertJson(['name'=> $reported_name, 'votes' => 3]);
 
         $response = $this->json('GET', route('survivor.show', ['survivor'=> $reported]));
         $response->assertStatus(200)->assertJsonFragment(['is_infected' => True]);
 
         // Some survivor vote
-        $response = $this->json('GET', $actionReport);
+        $response = $this->json('PUT', $routeReport);
         $response->assertStatus(402);
     }
 }
