@@ -11,6 +11,7 @@ class Recourse extends Model
     protected $fillable = ['amount', 'item_id', 'survivor_id'];
     protected $appends = ['item_name', 'item_point', 'points'];
     protected $attributes = ['amount' => 0];
+    public $timestamps = false;
 
     public static $createRules = [
         'amount' => ['required', 'nullable', 'gte:0'],

@@ -9,10 +9,11 @@ class Item extends Model
 {
     //
     protected $fillable = ['name', 'point'];
+    public $timestamps = false;
 
     public function recourses()
     {
-        return $this->hasMany(Recourse::class);
+        return $this->hasMany(Recourse::class, 'recourse_id');
     }
 }
 

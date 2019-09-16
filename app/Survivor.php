@@ -35,13 +35,6 @@ class Survivor extends Model
         return $this->belongsToMany(Survivor::class, 'survivor_infected', 'report_id', 'reported_id');
     }
 
-    public function setRecoursesAttribute($recourses)
-    {
-        foreach ($recourses as $recourse) {
-            $this->recourses()->save(new Recourse($recourse));
-        }
-    }
-
     public function getLocationAttribute()
     {
         return ['latitude' => $this->attributes['latitude'], 'longitude' => $this->attributes['longitude']];
