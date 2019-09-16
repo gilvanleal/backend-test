@@ -24,7 +24,7 @@ Route::prefix('survivors')->group(function () {
     Route::put('{survivor}', 'SurvivorController@update');
     Route::delete('{survivor}', 'SurvivorController@delete');
     Route::get('{survivor}/update-location', 'SurvivorController@update_location');
-    Route::get('{report}/report-contamination/{reported}', 'SurvivorController@report_contamination');
+    Route::put('{report}/report-contamination/{reported}', 'SurvivorController@report_contamination')->name('suvivor.report');
 });
 
 Route::prefix('recourses')->group(function () {

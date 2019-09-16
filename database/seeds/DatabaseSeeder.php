@@ -15,6 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ItemTableSeeder::class);
         $this->call(ReportInfectedTableSeeder::class);
         $this->call(SurvivorTableSeeder::class);
-        $this->call(RecourseTableSeeder::class);
+        //$this->call(RecourseTableSeeder::class);
     }
 }

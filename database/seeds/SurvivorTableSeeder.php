@@ -16,17 +16,20 @@ class SurvivorTableSeeder extends Seeder
     {
         //
         Schema::disableForeignKeyConstraints();
+        Recourse::truncate();
         Survivor::truncate();
         Schema::enableForeignKeyConstraints();
 
-        Survivor::create(['name' => 'Gilvan Leal', 'birth' => '1990-10-19',
+        $s = Survivor::create(['name' => 'Gilvan Leal', 'birth' => '1990-10-19',
          'gender' => 'male', 'latitude'=> 10.123456, 'longitude'=> 20.654321
-         ])->recourses()->createMany([
+         ]);
+         $s->recourses()->createMany([
             ['amount' => 2, 'item_id' => Item::where('name', 'Water')->value('id')],
             ['amount' => 1, 'item_id' => Item::where('name', 'Medication')->value('id')],
             ['amount' => 4, 'item_id' => Item::where('name', 'Ammunition')->value('id')]
          ]
         );
+        $s->save();
         Survivor::create(['name' => 'Dywlly Porto', 'birth' => '1985-11-08',
          'gender' => 'female', 'latitude'=> 50.123456, 'longitude'=> 90.654321
          ])->recourses()->createMany([
@@ -42,7 +45,7 @@ class SurvivorTableSeeder extends Seeder
          ]
         );
 
-        Survivor::create(['name' => 'Paulo Silva', 'birth' => '100-12-5',
+        Survivor::create(['name' => 'Paulo Silva', 'birth' => '2012-12-5',
          'gender' => 'male', 'latitude'=> 50.123456, 'longitude'=> 90.654321
          ])->recourses()->createMany([
             ['amount' => 10, 'item_id' => Item::where('name', 'Food')->value('id')],
