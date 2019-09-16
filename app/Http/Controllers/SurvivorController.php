@@ -26,13 +26,12 @@ class SurvivorController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate(Survivor::$createRules);
+        $validatedData = $request->validate(Survivor::createRules());
         $result = DB::transaction(
-            function() use($validatedData){
+            function() use ($validatedData){
                 try{
-                    $validateData = $this->validate(request(), Survivor::$createRules);
-                    $survivor = Survivor::create($validateData);
-                    $survivor->recourses()->createMany($validateData['recourses']);
+                    $survivor = Survivor::create($validatedData);
+                    $survivor->recourses()->createMany($validatedData['recourses']);
                     $survivor->save();
                     return response()->json(new SurvivorResource($survivor), 201);
                 }catch(\Excpetion $e){

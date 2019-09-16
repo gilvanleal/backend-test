@@ -15,16 +15,27 @@ class Survivor extends Model
     protected $guarded = ['recourses', 'reporteds'];
     protected $attributes = ['infected' => 0, 'birth' => '2019-01-01'];
 
-    public static $createRules = [
+    public static $updateRules = [
         'name' => ['required','max:100'],
         'birth' => ['required','date'],
         'latitude' => ['required','numeric'],
         'longitude' => ['required','numeric'],
         'gender' => ['required'],
-        'recourses' => ['present', 'array'],
-        'recourses.*.amount' => ['required', 'integer', 'gte:0'],
-        'recourses.*.item_id' => ['required', 'integer']
     ];
+
+    public static function updateRules(){
+        return self::$updateRules;
+    }
+
+    public static function createRules()
+    {
+        return array_merge(
+            self::$updateRules, [
+                'recourses' => ['present', 'array'],
+                'recourses.*.amount' => ['required', 'integer', 'gte:0'],
+                'recourses.*.item_id' => ['required', 'integer']
+            ]);
+    }
 
     public function recourses()
     {
