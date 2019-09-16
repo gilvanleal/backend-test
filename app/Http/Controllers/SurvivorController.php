@@ -43,8 +43,9 @@ class SurvivorController extends Controller
 
     public function update(Request $request, Survivor $survivor)
     {
+        $validatedData = $request->validate(Survivor::$updateRules);
         if(!$survivor->is_infected){
-            $survivor->update($request->all());
+            $survivor->update($validatedData);
             return response()->json($survivor, 200);
         }else{
             return response()->json("Não atualizado", 406);
